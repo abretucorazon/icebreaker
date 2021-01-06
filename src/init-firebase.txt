@@ -1,0 +1,17 @@
+import {firebase} from 'firebase';
+
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    var firebaseConfig = {
+      apiKey: "AIzaSyCzF9PZgs7fieqCn_cRkFGNA-zMLJYSOQY",
+      authDomain: "icebreaker-marvin-sandbox.firebaseapp.com",
+      projectId: "icebreaker-marvin-sandbox",
+      storageBucket: "icebreaker-marvin-sandbox.appspot.com",
+      messagingSenderId: "246181415945",
+      appId: "1:246181415945:web:8d6a45f6a9be5639fb3cd8",
+      measurementId: "G-BCHWWSHVFT"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+
