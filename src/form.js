@@ -1,6 +1,8 @@
 import {useState,useEffect} from 'react';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,13 +28,46 @@ function FormField (props) {
       );
 
     const newProps = {...props, value: state, onChange: onChange};
+
+    //console.log("RENDER field");
+
     return (
         <TextField {...newProps} />)
 
 }
 
+
+function FormCheckField (props) {
+
+  //console.log ("props: ", props);
+   
+  const [state, setState] = useState(props.value);
+
+  const onChange = (e) => {
+      setState(e.target.checked);
+  }
+  
+  
+  useEffect(
+      () => setState(props.value),
+      [props]
+    );
+
+
+  //console.log("RENDER check field");
+
+  return (
+    <FormControlLabel
+    control={<Checkbox checked={state} onChange={onChange} name={props.name} />}
+    label={props.label}
+    />      
+      )
+}
+
+
+
 export default function FormPropsTextFields(props) {
-  const [state,setState] = useState(props);
+  //const [state,setState] = useState(props);
 
   const classes = useStyles();
   const bReadOnly = false;
@@ -44,17 +79,29 @@ export default function FormPropsTextFields(props) {
       for(let [key,value] of formData.entries()) {
         submitData[key] = value;
      }
-     console.log('SubmitData: ',submitData);
+
+     submitData.random_card_order = (submitData.random_card_order !== undefined) ? true : false;
      submitData.duration_second = Number(submitData.duration_second);
      submitData.weight = Number(submitData.weight);
+
+     //console.log('SubmitData: ',submitData);
+
      props.onSave(submitData);
   }
 
+
+
+  /*
   useEffect(
-    () => setState(props),
+    () => {
+      //setState(props); 
+      //setRandomOrder(props.random_card_order);
+    },
     [props]
   );
+*/
 
+  //console.log("RENDER FORM");
 
   return (
     <form id="MyForm" className={classes.root} noValidate autoComplete="off" onSubmit={onSubmit}>
@@ -64,7 +111,7 @@ export default function FormPropsTextFields(props) {
           type="number"
           name="duration_second"
           label="Duration"
-          value={state.duration_second}
+          value={props.duration_second}
           variant="outlined"
           InputLabelProps={{
             shrink: true,
@@ -77,7 +124,7 @@ export default function FormPropsTextFields(props) {
           required
           name="game_type"
           label="Type"
-          value={state.game_type}
+          value={props.game_type}
           variant="outlined"
           InputLabelProps={{
             shrink: true,
@@ -90,7 +137,7 @@ export default function FormPropsTextFields(props) {
           required
           name="emoji"
           label="emoji"
-          value={state.emoji}
+          value={props.emoji}
           variant="outlined"
           InputLabelProps={{
             shrink: true,
@@ -103,7 +150,7 @@ export default function FormPropsTextFields(props) {
           required
           name="name"
           label="name"
-          value={state.name}
+          value={props.name}
           InputProps={{
             readOnly: bReadOnly,
           }}
@@ -118,7 +165,7 @@ export default function FormPropsTextFields(props) {
           label="Question"
           multiline
           rowsMax={4}
-          value={state.question_md}
+          value={props.question_md}
           InputLabelProps={{
             shrink: true,
           }}
@@ -127,24 +174,16 @@ export default function FormPropsTextFields(props) {
             readOnly: bReadOnly,
           }}
         />
-        <FormField
+        <FormCheckField 
           name="random_card_order"
-          label="Random Order?"
-          value={(state.random_card_order === '') ? '' : (state.random_card_order) ? "true" : "false"}
-          helperText=""
-          InputLabelProps={{
-            shrink: true,
-          }}
-          InputProps={{
-            readOnly: bReadOnly,
-          }}
-          variant="outlined"
-        />
+          label="Random Order"
+          value={props.random_card_order}
+        />      
         <FormField
           required
           name="tags"
           label="Tags"
-          value={state.tags}
+          value={props.tags}
           InputLabelProps={{
             shrink: true,
           }}
@@ -158,7 +197,7 @@ export default function FormPropsTextFields(props) {
           type="number"
           name="weight"
           label="Weight"
-          value={state.weight}
+          value={props.weight}
           variant="outlined"
           InputLabelProps={{
             shrink: true,

@@ -18,7 +18,7 @@ const seedData = [
 ];
 
 const emptyRow = { id: '', duration_second: '', game_type: '', emoji: '', name: '', 
-question_md: '', random_card_order: '', 
+question_md: '', random_card_order: false, 
 tags: '', weight: ''};
 
 
@@ -57,19 +57,19 @@ function App() {
     // Update a row
     if (selRow.id !== '') {
       //submitData.tags = submitData.tags.split(',');
-      newRowData.random_card_order = (newRowData.random_card_order === 'true' ? true : false);
+      // newRowData.random_card_order = (newRowData.random_card_order === 'true' ? true : false);
       newRowData.id = selRow.id;
       setSelRow(newRowData);
       setRows(updateRowItem(rows,newRowData));
-      console.log("onSave: ",rows);
+      //console.log("onSave: ",rows);
     }
     else{
       // Create new row
       const newRow = Object.assign({},newRowData);
       newRow.id = rows.length + 1;
       const newRowsData = rows.concat([newRow]);
-      console.log("new row data: ", newRowsData);
       setRows(newRowsData);
+      //console.log("new row data: ", newRowsData);
     }
   }
 
@@ -89,7 +89,7 @@ function App() {
     }
   }
 
-  //const formProps = Object.assign(selRow,{onSave});
+  const formProps = Object.assign(selRow,{onSave});
 
 
   //const classes = useStyles();
@@ -108,7 +108,7 @@ function App() {
           </Button>
         </div>
         <p></p>
-        <FormPropsTextFields {...{...selRow,onSave}} />
+        <FormPropsTextFields {...formProps} />
     </Grid>
   );
 }
